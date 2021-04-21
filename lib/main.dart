@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_redux_tutorial/redux/actions.dart';
 import 'package:flutter_redux_tutorial/redux/app_state.dart';
-import 'package:flutter_redux_tutorial/redux/reducers.dart';
 import 'package:redux/redux.dart';
 
+import 'redux/actions.dart';
+import 'redux/reducers.dart';
+
 void main() {
-  final Store<AppState> store = Store(reducer, initialState: AppState(count: 0,label: "Init"));
+  final Store<AppState> store = Store(reducer, initialState: AppState(counter: 0, text: "init"));
   runApp(StoreProvider(
     store: store,
     child: MaterialApp(
@@ -19,52 +20,40 @@ class _Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Store<AppState> store = StoreProvider.of<AppState>(context);
+    String inputText = "";
     return Scaffold(
       appBar: AppBar(
         title: Text("Flutter Redux"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => store.dispatch(AddAction()),
+        child: Icon(Icons.add),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(onPressed: () => store.dispatch(SetTextAction()), child: Text("Set")),
-                SizedBox(width: 20),
-                StoreConnector<AppState,AppState>(
-                    converter: (store) => store.state,
-                    builder: (context, state) => Text(state.label)),
-                SizedBox(width: 20),
-                ElevatedButton(onPressed: () => store.dispatch(ResetTextAction()), child: Text("Reset")),
-              ],
+            Container(
+              width: 200,
+              child: TextField(
+                onChanged: (value) => inputText = value,
+              ),
             ),
-
+            SizedBox(height: 20),
+            TextButton(onPressed: () => store.dispatch(SetTextAction(text: inputText)), child: Text("SET")),
+            StoreConnector<AppState, AppState>(
+                converter: (store) => store.state, builder: (context, vm) => Text(vm.text)),
+            SizedBox(height: 20),
             StoreConnector<AppState, AppState>(
               converter: (store) => store.state,
               builder: (context, state) => Text(
-                state.count.toString(),
+                state.counter.toString(),
                 style: TextStyle(fontSize: 35),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                    onPressed: () => store.dispatch(AddAction()),
-                    child: Icon(Icons.add)),
-                SizedBox(width: 20),
-                FloatingActionButton(
-                    onPressed: () => store.dispatch(RemoveAction()),
-                    child: Icon(Icons.remove)),
-              ],
-            )
           ],
         ),
       ),
     );
   }
 }
-
-
-

@@ -1,7 +1,7 @@
 class AddAction {}
 
-class RemoveAction {}
+class SetTextAction {
+  final String text;
 
-class SetTextAction {}
-
-class ResetTextAction {}
+  SetTextAction({required this.text});
+}

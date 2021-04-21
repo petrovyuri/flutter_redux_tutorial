@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
-
-@immutable
 class AppState {
-  final int count;
-  final String label;
+  final int counter;
+  final String text;
 
-  AppState({required this.count, required this.label});
+  AppState({required this.counter, required this.text});
+
 }
