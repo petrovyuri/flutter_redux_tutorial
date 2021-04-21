@@ -25,10 +25,6 @@ class _Counter extends StatelessWidget {
       appBar: AppBar(
         title: Text("Flutter Redux"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => store.dispatch(AddAction()),
-        child: Icon(Icons.add),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +36,14 @@ class _Counter extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            TextButton(onPressed: () => store.dispatch(SetTextAction(text: inputText)), child: Text("SET")),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(onPressed: () => store.dispatch(SetTextAction(text: inputText)), child: Text("SET")),
+                SizedBox(width: 20,),
+                ElevatedButton(onPressed: () => store.dispatch(ResetTextAction()), child: Text("RESET")),
+              ],
+            ),
             StoreConnector<AppState, AppState>(
                 converter: (store) => store.state, builder: (context, vm) => Text(vm.text)),
             SizedBox(height: 20),
@@ -51,6 +54,20 @@ class _Counter extends StatelessWidget {
                 style: TextStyle(fontSize: 35),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton(
+                  onPressed: () => store.dispatch(AddAction()),
+                  child: Icon(Icons.add),
+                ),
+                SizedBox(width: 20,),
+                FloatingActionButton(
+                  onPressed: () => store.dispatch(RemoveAction()),
+                  child: Icon(Icons.remove),
+                ),
+              ],
+            )
           ],
         ),
       ),
