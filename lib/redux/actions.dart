@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class AddAction {}
 
 class RemoveAction {}
@@ -9,3 +11,11 @@ class SetTextAction {
 }
 
 class ResetTextAction {}
+
+class GetImageAction {}
+
+class LoadedImageAction {
+  final Widget widget;
+
+  LoadedImageAction(this.widget);
+}

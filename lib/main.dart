@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_tutorial/redux/app_state.dart';
+import 'package:flutter_redux_tutorial/redux/middlewares.dart';
 import 'package:redux/redux.dart';
 
 import 'redux/actions.dart';
 import 'redux/reducers.dart';
 
 void main() {
-  final Store<AppState> store = Store(reducer, initialState: AppState(counter: 0, text: "init"));
+  final Store<AppState> store = Store(reducer,
+      middleware: [loaderMiddleware],
+      initialState:
+          AppState(counter: 0, text: "init", widget: Icon(Icons.image)));
   runApp(StoreProvider(
     store: store,
     child: MaterialApp(
@@ -29,6 +33,15 @@ class _Counter extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+                width: 150,
+                height: 150,
+                margin: const EdgeInsets.all(16),
+                child: StoreConnector<AppState, AppState>(
+                  converter: (store) => store.state,
+                  builder: (context, vm) => vm.widget,
+                )),
+            ElevatedButton(onPressed: () => store.dispatch(GetImageAction()), child: Text("Get image")),
             Container(
               width: 200,
               child: TextField(
