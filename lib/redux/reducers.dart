@@ -29,13 +29,7 @@ Reducer<int> _counterReducer = combineReducers([
   TypedReducer<int, RemoveAction>(_removeCounterReducer),
 ]);
 
-int _addCounterReducer(int count, AddAction action) {
-  int count = 0;
-  for (var i = 0; i < 5000000000; ++i) {
-    count++;
-  }
-  return count;
-}
+int _addCounterReducer(int count, AddAction action) => action.count;
 
 int _removeCounterReducer(int count, RemoveAction action) => count - 1;
 
